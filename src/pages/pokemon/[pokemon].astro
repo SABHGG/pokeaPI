@@ -1,0 +1,28 @@
+---
+import Layout from '../../layouts/Layout.astro';
+const {pokemon} = Astro.params
+let data = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemon}`).then(res => res.json()).then(data => data)
+let description = await fetch(`https://pokeapi.co/api/v2/characteristic/${data.id}`).then(res => res.json()).then(data => data)
+---
+<Layout title={pokemon}>
+	<main class="flex flex-col items-center justify-center h-[100vh]">
+		<section class="grid grid-cols-2 gap-4 border-2 p-2 rounded-md">
+			<div class="row-span-1">
+				<img class="aspect-square rounded-sm size-52" src={data.sprites.front_default}>
+			</div>
+            <div class="row-span-1">
+                <h3>{data.id} {data.name}</h3>
+                <div class="flex gap-2">
+                    {data.types.map(type => (
+                        <span class="bg-gray-200 p-1 rounded-md">{type.type.name}</span>
+                    ))}
+                </div>
+                <p>WT: {data.weight}</p>
+                <p>HT: {data.height}</p>
+            </div>
+            <div class="col-span-3">
+                <p>{description.descriptions[7].description}</p>
+            </div>
+		</section>
+	</main>
+</Layout>

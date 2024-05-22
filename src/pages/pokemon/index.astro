@@ -1,0 +1,38 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Pokemon from "../../components/PokemonImage.astro";
+let data = await fetch(`https://pokeapi.co/api/v2/pokemon/?limit=30&offset=0`)
+  .then((res) => res.json())
+  .then((data) => data);
+---
+
+<Layout title="Welcome to Astro.">
+  <main class="flex flex-col items-center justify-center">
+    <section class="grid grid-cols-3 gap-2 max-w-4xl">
+      {
+        data.results.map((pokemon) => (
+          <article
+            id={pokemon.name}
+            class="border-2 p-2 rounded-md cursor-pointer"
+          >
+            <Pokemon name={pokemon.name} />
+            <h3>{pokemon.name}</h3>
+          </article>
+        ))
+      }
+    </section>
+  
+  </main>
+</Layout>
+
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', () => {
+    const articles = document.querySelectorAll('article');
+    articles.forEach(article => {
+      article.addEventListener('click', () => {
+        const name = article.id;
+        window.location.href = `/pokemon/${name}`;
+      });
+    });
+  });
+</script>
