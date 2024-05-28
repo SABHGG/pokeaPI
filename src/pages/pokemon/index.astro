@@ -7,30 +7,37 @@ let data = await fetch(`https://pokeapi.co/api/v2/pokemon/?limit=30&offset=0`)
 ---
 
 <Layout title="Welcome to Astro.">
-  <main class="flex flex-col items-center justify-center">
-    <section class="grid grid-cols-3 gap-2 max-w-4xl">
+  <main class="grid">
+    <section
+      class="grid gap-2 p-2 md:grid-cols-2 sm:grid-cols-1 lg:grid-cols-3"
+    >
       {
         data.results.map((pokemon) => (
-          <article
-            id={pokemon.name}
-            class="border-2 p-2 rounded-md cursor-pointer"
-          >
-            <Pokemon name={pokemon.name} />
-            <h3>{pokemon.name}</h3>
+          <article class="flex flex-col items-center border-2 p-2 rounded-md cursor-pointer">
+            <div>
+              <button>♥</button>
+            </div>
+            <div id={pokemon.name}>
+              <Pokemon name={pokemon.name} />
+              <h3>{pokemon.name}</h3>
+            </div>
           </article>
         ))
       }
     </section>
-  
+    <nav>
+      <button>atras</button> 
+      <button>siguiente</button>
+    </nav>
   </main>
 </Layout>
 
-<script is:inline>
-  document.addEventListener('DOMContentLoaded', () => {
-    const articles = document.querySelectorAll('article');
-    articles.forEach(article => {
-      article.addEventListener('click', () => {
-        const name = article.id;
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const pokemon = document.querySelectorAll("div[id]");
+    pokemon.forEach((pokemon) => {
+      pokemon.addEventListener("click", () => {
+        const name = pokemon.id;
         window.location.href = `/pokemon/${name}`;
       });
     });
